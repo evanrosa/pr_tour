@@ -35,7 +35,7 @@ This project builds an **ETL pipeline** using **Kafka, Flink, Spark, and Airflow
 ## 🚀 How to Run the Project
 ### 1️⃣ Start Kafka, Spark, Flink, and Airflow
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 2️⃣ Run the Kafka Producer (Real-Time Flight Data Fetcher)

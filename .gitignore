@@ -171,6 +171,7 @@ cython_debug/
 
 # JARS
 /scripts/**/*.jar
+/data/**/*.csv
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

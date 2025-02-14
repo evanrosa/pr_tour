@@ -20,6 +20,7 @@ This project builds an **ETL pipeline** using **Kafka, Flink, Spark, and Airflow
 ## 📂 Project Structure
 ```
 ├── dags/                  # Airflow DAGs for scheduling
+│   ├── flight_etl_dag.py  # Airflow DAG for orchestration
 ├── data/
 │   ├── flights/           # Historical flight data (CSV)
 │   ├── processed/         # Output of Spark jobs
@@ -27,7 +28,6 @@ This project builds an **ETL pipeline** using **Kafka, Flink, Spark, and Airflow
 │   ├── kafka_producer.py  # Fetches real-time flight data
 │   ├── flink_processor.py # Flink job for streaming analysis
 │   ├── spark_etl.py       # Spark job for batch processing
-│   ├── flight_etl_dag.py  # Airflow DAG for orchestration
 ├── docker-compose.yml     # Docker setup for Kafka, Spark, Flink, Airflow
 ├── README.md              # Project documentation
 ```

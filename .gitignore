@@ -171,7 +171,6 @@ cython_debug/
 
 # JARS
 /scripts/**/*.jar
-/data/**/*.csv
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
@@ -180,3 +179,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+data/flights/*.csv

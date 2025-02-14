@@ -181,3 +181,7 @@ cython_debug/
 
 # Large Data Files
 data/flights/*.csv
+
+# Airflow
+airflow_home/
+

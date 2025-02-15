@@ -29,7 +29,9 @@ services:
       - "8080:8080"
 
   flink-jobmanager:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/flink/Dockerfile
     container_name: flink-jobmanager
     volumes:
       - ./scripts:/scripts
@@ -41,7 +43,9 @@ services:
     command: jobmanager
 
   flink-taskmanager:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/flink/Dockerfile
     container_name: flink-taskmanager
     depends_on:
       - flink-jobmanager
@@ -66,11 +70,39 @@ services:
     depends_on:
       - postgres
     environment:
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/pr_tour_airflow
     volumes:
       - ./dags:/opt/airflow/dags
       - ./scripts:/opt/airflow/scripts
-      - ./airflow_home:/usr/local/airflow
     ports:
       - "8082:8082"
-    command: bash -c "airflow db init && airflow webserver -p 8082"
+    command: >
+      bash -c "airflow db upgrade &&
+               airflow webserver -p 8082 --host 0.0.0.0"
+
+  superset:
+    build:
+      context: .
+      dockerfile: docker/superset/Dockerfile
+    container_name: superset
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB_SUPERSET=${POSTGRES_DB_SUPERSET}
+      - SUPERSET=${SUPERSET}
+      - SUPERSET_CONFIG_PATH=/etc/superset/superset_config.py
+    volumes:
+      - ./superset_home/superset_config.py:/etc/superset/superset_config.py
+    ports:
+      - "8088:8088"
+    command: >
+      /bin/sh -c "
+      superset db upgrade &&
+      superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@superset.com --password admin &&
+      superset init &&
+      superset run -p 8088 --host 0.0.0.0 --with-threads --reload --debugger"
+
+

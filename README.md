@@ -21,13 +21,13 @@ This project builds an **ETL pipeline** using **Kafka, Flink, Spark, and Airflow
 ```
 ├── dags/                  # Airflow DAGs for scheduling
 │   ├── flight_etl_dag.py  # Airflow DAG for orchestration
+│   ├── spark_etl.py       # Spark job for batch processing
 ├── data/
 │   ├── flights/           # Historical flight data (CSV)
 │   ├── processed/         # Output of Spark jobs
 ├── scripts/
 │   ├── kafka_producer.py  # Fetches real-time flight data
 │   ├── flink_processor.py # Flink job for streaming analysis
-│   ├── spark_etl.py       # Spark job for batch processing
 ├── docker-compose.yml     # Docker setup for Kafka, Spark, Flink, Airflow
 ├── README.md              # Project documentation
 ```
@@ -63,6 +63,34 @@ airflow scheduler & airflow webserver
 - **Historical Flight Data:** [FAA TranStats](https://www.transtats.bts.gov/)
 - **Weather Data (Optional):** [NOAA/NWS API](https://www.weather.gov/documentation/services-web-api)
 - **Puerto Rico Open Data:** [data.pr.gov](https://data.pr.gov/)
+
+
+## flowchart LR
+    ```subgraph Data_Sources[Data Sources]
+        A[AviationStack API]
+        B[Historical Flight Data (FAA)]
+    end
+
+    subgraph Streaming_Layer[Streaming Layer]
+        A --> C[Kafka Producer]
+        C --> D[Kafka Cluster]
+        D --> E[Flink Streaming Job]
+    end
+
+    subgraph Batch_Layer[Batch Processing Layer]
+        B --> F[Airflow DAG]
+        F --> G[Spark ETL Job]
+    end
+
+    subgraph Storage[Data Storage]
+        E --- H[Postgres Database]
+        G --- H
+    end
+
+    subgraph Visualization[Visualization]
+        H --> I[Superset Dashboard]
+    end```
+
 
 ## 🎯 Future Enhancements
 - ✅ Add real-time **dashboard** using Streamlit or Superset.

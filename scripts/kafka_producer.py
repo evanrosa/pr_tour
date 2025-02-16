@@ -11,7 +11,7 @@ API_KEY = os.getenv("AVIATIONSTACK_KEY")
 KAFKA_TOPIC = "flight_data"
 
 producer = KafkaProducer(
-    bootstrap_servers="localhost:9092",
+    bootstrap_servers="kafka:9092",
     value_serializer=lambda x: json.dumps(x).encode("utf-8"),
 )
 
@@ -29,9 +29,6 @@ def fetch_flights():
         print("No flights found!")
         return
 
-    # Limit to first 10 flights
-    flights = flights[:10]
-    print(f"Processing first {len(flights)} flights...")
 
 
     for flight in flights:

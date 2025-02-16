@@ -16,17 +16,33 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "my-topic:1:1"
+      KAFKA_CREATE_TOPICS: "flight_data:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  kafka_producer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: kafka_producer
+    volumes:
+      - ./scripts:/scripts
+    depends_on:
+      - kafka
+    command: python /scripts/kafka_producer.py
+
+
   spark:
-    image: bitnami/spark:latest
+    build:
+      context: .
+      dockerfile: docker/spark/Dockerfile
     container_name: spark
     environment:
       - SPARK_MODE=master
     ports:
       - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
 
   flink-jobmanager:
     build:
@@ -71,6 +87,7 @@ services:
       context: .
       dockerfile: docker/airflow/Dockerfile
     container_name: airflow
+    env_file: .env
     depends_on:
       - postgres
     environment:

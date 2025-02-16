@@ -12,6 +12,10 @@ RUN apt-get update && \
     apt-get install -y openjdk-17-jdk-headless procps && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+#Copy the JDBC jar into the location expected by your ETL script
+COPY ./dags/jars/postgresql-42.2.23.jar /opt/bitnami/spark/jars/postgresql-42.2.23.jar
+
 # Switch to airflow user for PySpark installation
 USER airflow
 RUN pip install --no-cache-dir pyspark
+RUN pip install --no-cache-dir pyflink

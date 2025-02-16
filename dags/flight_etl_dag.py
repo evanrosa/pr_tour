@@ -2,8 +2,6 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta
 
-from airflow.utils import retries
-
 default_args = {
     "owner": "Evan Rosa",
     "start_date": datetime(2023, 1, 1),
@@ -24,10 +22,5 @@ run_spark_etl = BashOperator(
     dag=dag,
 )
 
-run_flink_streaming = BashOperator(
-    task_id="run_flink_streaming",
-    bash_command="python /opt/airflow/scripts/flink_processor.py",
-    dag=dag,
-)
 
-run_spark_etl >> run_flink_streaming
+run_spark_etl

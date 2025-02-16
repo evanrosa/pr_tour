@@ -30,6 +30,7 @@ pydot==1.4.2
 pymongo==4.11.1
 pyparsing==3.2.1
 pyspark==3.5.4
+pyflink
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2025.1

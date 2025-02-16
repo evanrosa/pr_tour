@@ -16,11 +16,11 @@ COPY ../../requirements.txt /opt/flink/job/
 RUN pip3 install --no-cache-dir --prefer-binary --disable-pip-version-check --timeout=100 -r /opt/flink/job/requirements.txt
 
 # Copy actual script files after dependencies (ensures Docker caching efficiency)
-COPY ../../scripts/flink_processor.py /opt/flink/job/
-COPY ../../scripts/config/flink-conf.yaml /opt/flink/conf/flink-conf.yaml
-COPY ../../scripts/jars/flink-connector-kafka-3.4.0-1.20.jar /opt/flink/lib/
-COPY ../../scripts/jars/kafka-clients-3.9.0.jar /opt/flink/lib/
-COPY ../../scripts/jars/flink-python-1.20.0.jar /opt/flink/lib/
+COPY ../../dags/flink_processor.py /opt/flink/job/
+COPY ../../dags/config/flink-conf.yaml /opt/flink/conf/flink-conf.yaml
+COPY ../../dags/jars/flink-connector-kafka-3.4.0-1.20.jar /opt/flink/lib/
+COPY ../../dags/jars/kafka-clients-3.9.0.jar /opt/flink/lib/
+COPY ../../dags/jars/flink-python-1.20.0.jar /opt/flink/lib/
 
 # ✅ Ensure Flink recognizes the Python JAR
 ENV FLINK_CLASSPATH="/opt/flink/lib/flink-python-1.20.0.jar"

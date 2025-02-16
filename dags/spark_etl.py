@@ -3,7 +3,7 @@ from pyspark.sql.functions import col, avg
 
 spark = SparkSession.builder.appName("flight_analysis").getOrCreate()
 
-df = spark.read.csv("data/flights/data.csv", header=True, inferSchema=True)
+df = spark.read.csv("/opt/airflow/data/flights/data.csv", header=True, inferSchema=True)
 
 df_filtered = df.select("FlightDate", "Reporting_Airline", "Origin", "Dest", "DepDelay") \
     .filter(col("Dest") == "SJU")

@@ -1,0 +1,4 @@
+[
+   {"name": "flight_data", "num_partitions": 3, "replication_factor": 1},
+   {"name": "future_flights", "num_partitions": 3, "replication_factor": 1}
+]

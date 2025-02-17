@@ -40,7 +40,7 @@ docker compose up -d
 
 ### 2️⃣ Run the Kafka Producer (Real-Time Flight Data Fetcher)
 ```bash
-python scripts/kafka_producer.py
+docker compose run kafka_producer
 ```
 
 ### 3️⃣ Run the Flink Streaming Processor

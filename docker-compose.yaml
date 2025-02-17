@@ -16,7 +16,6 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "flight_data:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -29,8 +28,19 @@ services:
       - ./scripts:/scripts
     depends_on:
       - kafka
+    env_file:
+      - .env
     command: python /scripts/kafka_producer.py
 
+  topic_creator:
+    image: python:3.10
+    container_name: topic_creator
+    volumes:
+      - ./scripts:/app/scripts
+      - ./scripts/topics_config.json:/app/topics_config.json
+    command: python /app/scripts/create_topics.py
+    depends_on:
+      - kafka
 
   spark:
     build:
@@ -56,6 +66,8 @@ services:
       - "6123:6123" # RPC Port
     environment:
       - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+    env_file:
+      - .env
     command: jobmanager
 
   flink-taskmanager:

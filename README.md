@@ -60,7 +60,7 @@ airflow scheduler & airflow webserver
 
 ### 6️⃣ Check DB Tables
 ```bash
-docker exec -it postgres psql -U evro -d pr_tour_superset
+docker exec -it postgres psql -U username -d pr_tour_superset
 ```
 
 ### You may need to create a user for airflow

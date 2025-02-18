@@ -45,7 +45,7 @@ docker compose run kafka_producer
 
 ### 3️⃣ Run the Flink Streaming Processor
 ```bash
-python scripts/flink_processor.py
+Inside `docker` - flink run -py /opt/flink/job/flink_processor.py
 ```
 
 ### 4️⃣ Run the Spark Batch Processor
@@ -57,6 +57,25 @@ python scripts/spark_etl.py
 ```bash
 airflow scheduler & airflow webserver
 ```
+
+### 6️⃣ Check DB Tables
+```docker exec -it postgres psql -U evro -d pr_tour_superset
+```
+
+### You may need to create a user for airflow
+```
+docker exec -it airflow airflow db upgrade
+
+docker exec -it airflow airflow users create \
+  --username abc \
+  --firstname Admin \
+  --lastname User \
+  --role Admin \
+  --email admin@example.com \
+  --password xyz
+```
+
+
 
 ## 📊 Data Sources
 - **Real-Time Flights:** [AviationStack API](https://aviationstack.com/)

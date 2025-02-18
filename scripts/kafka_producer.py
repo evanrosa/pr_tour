@@ -15,6 +15,9 @@ producer = KafkaProducer(
 def fetch_flights(topic_name, airport):
     url = f"http://api.aviationstack.com/v1/flights?access_key={API_KEY}&arr_iata={airport}"
     response = requests.get(url)
+    print("Status code:", response.status_code)
+    print("Response text:", response.text)
+
     flights = response.json().get("data", [])
 
     if not flights:
@@ -38,6 +41,9 @@ def fetch_flights(topic_name, airport):
 def fetch_future_flights(topic_name, date, airport):
     url = f"http://api.aviationstack.com/v1/flightsFuture?iataCode={airport}&type=arrival&date={date}&access_key={API_KEY}"
     response = requests.get(url)
+    print("Status code:", response.status_code)
+    print("Response text:", response.text)
+
     flights = response.json().get("data", [])
 
     print("flights", flights)

@@ -54,8 +54,10 @@ t_env = StreamTableEnvironment.create(env, environment_settings=settings)
 # Convert the DataStream to a Table.
 flights_table = t_env.from_data_stream(flight_stream)
 
+jdbc_url = f"jdbc:postgresql://postgres:5432/{superset_db}"
+
 # Define a Postgres sink table using DDL.
-ddl = """
+ddl = f"""
 CREATE TABLE flights (
     flight_number STRING,
     departure_airport STRING,
@@ -65,12 +67,13 @@ CREATE TABLE flights (
     `timestamp` STRING
 ) WITH (
     'connector' = 'jdbc',
-    'url' = f'jdbc:postgresql://postgres:5432/{superset_db}',
+    'url' = '{jdbc_url}',
     'table-name' = 'flights',
-    'username' = db_user,
-    'password' = db_pass
+    'username' = '{db_user}',
+    'password' = '{db_pass}'
 )
 """
+
 t_env.execute_sql(ddl)
 
 # Insert the flight records into Postgres.
